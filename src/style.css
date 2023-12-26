@@ -1,0 +1,22 @@
+.close {
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.todo-list li.completed .title {
+	color: #949494;
+	text-decoration: line-through;
+}
+
+.todo-list li.completed span {
+  cursor: pointer;
+}
+
+.todo-list li.blank {
+  display: none;
+}
+
+.todo-list input.invisible-input {
+  display: none;
+}
+
