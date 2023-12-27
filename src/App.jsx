@@ -3,21 +3,51 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
 import "./style.css";
+import { useEffect } from "react";
+
+//useState, useEffect, useContext
+//useReducer, useCallback, useMemo, useRef
+
+const STORAGE_KEY = "todomvc-react"
+const todosStorage = {
+  fetch() {
+    const todos = JSON.parse(window.localStorage.getItem(STORAGE_KEY || '[]'))
+    return todos
+  },
+  save(todos) {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
+  }
+}
+
+todosStorage.save([
+  { title: "创建项目", isCheck: false, id: 1, isEdit: false },
+  { title: "组件化开发", isCheck: false, id: 2, isEdit: false },
+  { title: "掌握JSX", isCheck: true, id: 3, isEdit: false },
+  { title: "掌握hooks", isCheck: true, id: 4, isEdit: false },
+])
 
 function App() {
-  const [todos, setTodos] = useState([
-    { title: "创建项目", isCheck: false, id: 1, isEdit: false },
-    { title: "组件化开发", isCheck: false, id: 2, isEdit: false },
-    { title: "掌握JSX", isCheck: true, id: 3, isEdit: false },
-    { title: "掌握hooks", isCheck: true, id: 4, isEdit: false },
-  ]);
+  const [todos, setTodos] = useState(todosStorage.fetch());
   const initial = {
     title: "",
     isEdit: false
   }
+  let editInputRef = null
 
   const [newTodo, setNewTodo] = useState("");
   const [editTodo, setEditTodo] = useState(initial);
+
+  const setEditInputRef = (el, todo) => {
+    if(editTodo.id === todo.id) editInputRef = el
+  }
+
+  useEffect(() => {
+    if(editInputRef) editInputRef.focus()
+  }, [editTodo])
+
+  useEffect(() => {
+    todosStorage.save(todos)
+  }, [todos])
 
   const inputWord = (e) => {
     setNewTodo(e.target.value);
@@ -118,6 +148,7 @@ function App() {
               <input
                 type="text"
                 value={editTodo?.title}
+                ref={(el) => {setEditInputRef(el, todo)}}
                 onKeyUp={(e) => confirmEdit(e, todo)}
                 onBlur={(e) => {
                   confirmEdit(e, todo);
