@@ -11,12 +11,16 @@ function App() {
     { title: "掌握JSX", isCheck: true, id: 3, isEdit: false },
     { title: "掌握hooks", isCheck: true, id: 4, isEdit: false },
   ]);
+  const initial = {
+    title: "",
+    isEdit: false
+  }
 
   const [newTodo, setNewTodo] = useState("");
-  const [editTodo, setEditTodo] = useState("");
+  const [editTodo, setEditTodo] = useState(initial);
 
   const inputWord = (e) => {
-    setNewTodo(e.target.value)
+    setNewTodo(e.target.value);
   };
 
   const enterInput = (e) => {
@@ -27,63 +31,60 @@ function App() {
           title: newTodo,
           isCheck: false,
           isEdit: false,
-          id: todos[todos.length - 1].id + 1
-        }
-      ])
-      setNewTodo("")
+          id: todos[todos.length - 1].id + 1,
+        },
+      ]);
+      setNewTodo("");
     }
   };
 
   const changeCheckState = (e, id) => {
-    todos.map(todo => {
-      if (todo.id === id) todo.isCheck = e.target.checked
-    })
-    setTodos([...todos])
-  }
+    todos.map((todo) => {
+      if (todo.id === id) todo.isCheck = e.target.checked;
+    });
+    setTodos([...todos]);
+  };
 
   const removeTodo = (todo) => {
-    setTodos([...todos.filter(item => item.id !== todo.id)])
-  }
+    setTodos([...todos.filter((item) => item.id !== todo.id)]);
+  };
 
   const changeEditState = (todo) => {
-    todos.map(item => {
+    todos.map((item) => {
       if (todo.id === item.id) {
-        item.isEdit = true
-        setEditTodo(todo.title)
+        item.isEdit = true;
+        setEditTodo({...todo});
       }
-    })
-    setTodos([...todos])
-  }
+    });
+    setTodos([...todos]);
+  };
 
   const changeEditWord = (e) => {
-    setEditTodo(e.target.value)
-  }
+    editTodo.title = e.target.value
+    setEditTodo({...editTodo});
+  };
 
   const confirmEdit = (e, todo) => {
     const handleEdited = (todo) => {
-      console.log('editTodo',editTodo)
-      if(editTodo == "") {
-        console.log('editTodo',editTodo)
-        removeTodo(todo)
-      }
-      else {
-        todos.map(item => {
+      if (editTodo.title == "") {
+        removeTodo(todo);
+      } else {
+        todos.map((item) => {
           if (todo.id === item.id) {
-            item.title = editTodo
-            item.isEdit = false
+            item.title = editTodo.title;
+            item.isEdit = false;
           }
-        })
-        setTodos([...todos])
+        });
+        setTodos([...todos]);
       }
-      setEditTodo("")
+      setEditTodo(initial);
+    };
+    if (todo && todo.isEdit) {
+      if (e && e.code) {
+        if (e.code === "Enter") handleEdited(todo);
+      } else handleEdited(todo);
     }
-    console.log('todo',todo)
-    if(todo && todo.isEdit) {
-      if(e && e.code) {
-        if(e.code === "Enter") handleEdited(todo)
-      } else handleEdited(todo)
-    }
-  }
+  };
 
   return (
     <div className="app">
@@ -98,11 +99,34 @@ function App() {
           return (
             <div key={todo.id} className="view">
               <li className={todo.isEdit ? "blank" : "completed"}>
-                <span className={todo.isCheck ? "title" : ""} onDoubleClick={() => changeEditState(todo)}>{todo.title}</span>
-                <input type="checkbox" value={todo.isCheck} checked={todo.isCheck} onChange={(e) => changeCheckState(e, todo.id)}></input>
-                <span className="close" onClick={() => removeTodo(todo)}>X</span>
+                <span
+                  className={todo.isCheck ? "title" : ""}
+                  onDoubleClick={() => changeEditState(todo)}
+                >
+                  {todo.title}
+                </span>
+                <input
+                  type="checkbox"
+                  value={todo.isCheck}
+                  checked={todo.isCheck}
+                  onChange={(e) => changeCheckState(e, todo.id)}
+                ></input>
+                <span className="close" onClick={() => removeTodo(todo)}>
+                  X
+                </span>
               </li>
-              <input type="text" value={editTodo} onKeyUp={(e) => confirmEdit(e, todo)} onBlur={(e) => {confirmEdit(e, todo)}} onChange={(e) => {changeEditWord(e)}} className={todo.isEdit ? "edit-input" : "invisible-input"} />
+              <input
+                type="text"
+                value={editTodo?.title}
+                onKeyUp={(e) => confirmEdit(e, todo)}
+                onBlur={(e) => {
+                  confirmEdit(e, todo);
+                }}
+                onChange={(e) => {
+                  changeEditWord(e);
+                }}
+                className={todo.isEdit ? "edit-input" : "invisible-input"}
+              />
             </div>
           );
         })}
