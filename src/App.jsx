@@ -6,9 +6,10 @@ import "./style.css";
 
 function App() {
   const [todos, setTodos] = useState([
-    { title: "Cabbage", isCheck: false, id: 1, isEdit: false },
-    { title: "Garlic", isCheck: false, id: 2, isEdit: false },
-    { title: "Apple", isCheck: true, id: 3, isEdit: false },
+    { title: "创建项目", isCheck: false, id: 1, isEdit: false },
+    { title: "组件化开发", isCheck: false, id: 2, isEdit: false },
+    { title: "掌握JSX", isCheck: true, id: 3, isEdit: false },
+    { title: "掌握hooks", isCheck: true, id: 4, isEdit: false },
   ]);
 
   const [newTodo, setNewTodo] = useState("");
@@ -76,6 +77,7 @@ function App() {
       }
       setEditTodo("")
     }
+    console.log('todo',todo)
     if(todo && todo.isEdit) {
       if(e && e.code) {
         if(e.code === "Enter") handleEdited(todo)
@@ -100,7 +102,7 @@ function App() {
                 <input type="checkbox" value={todo.isCheck} checked={todo.isCheck} onChange={(e) => changeCheckState(e, todo.id)}></input>
                 <span className="close" onClick={() => removeTodo(todo)}>X</span>
               </li>
-              <input type="text" value={editTodo} onKeyUp={(e) => confirmEdit(e, todo)} onBlur={() => {confirmEdit(todo)}} onChange={(e) => {changeEditWord(e)}} className={todo.isEdit ? "edit-input" : "invisible-input"} />
+              <input type="text" value={editTodo} onKeyUp={(e) => confirmEdit(e, todo)} onBlur={(e) => {confirmEdit(e, todo)}} onChange={(e) => {changeEditWord(e)}} className={todo.isEdit ? "edit-input" : "invisible-input"} />
             </div>
           );
         })}
