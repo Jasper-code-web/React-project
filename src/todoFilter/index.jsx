@@ -1,15 +1,16 @@
-// import styles from "./index.css"
-import './index.css'
+import styles from "./index.module.css"
+// import './index.css'
+console.log('styles',styles)
 
 export default function TodoFilter({ visible, setVisible }) {
     return(
         <div className="footer">
-            <ul className="filters">
+            <ul className={styles.filters}>
                 {
                     ["all", "active", "completed"].map(v => (
-                        <li className="filtersLi" key={v}>
+                        <li className={styles.filtersLi} key={v}>
                             <button
-                                className={visible === v ? "selected" : ""}
+                                className={visible === v ? styles.selected : ""}
                                 onClick={() => { setVisible(v) }}
                             >
                                 {v}

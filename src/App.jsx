@@ -9,6 +9,11 @@ import { todosStorage } from "./hooks/storage";
 //useState, useEffect, useContext
 //useReducer, useCallback, useMemo, useRef
 
+//react中css使用方法
+//1. style
+//2. inline css
+//3. css module(文件名必须带.module.)
+
 const todosKey = 'todoskey'
 
 todosStorage.save(todosKey, [
