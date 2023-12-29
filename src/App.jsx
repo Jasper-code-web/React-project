@@ -13,6 +13,8 @@ import { todosStorage } from "./hooks/storage";
 //1. style
 //2. inline css
 //3. css module(文件名必须带.module.)
+//4. classnames通过对象动态传入class({"classname", boolean})
+//5. styled-components把css传入定义好的组件(通过模板字符串``),有利于组件复用
 
 const todosKey = 'todoskey'
 

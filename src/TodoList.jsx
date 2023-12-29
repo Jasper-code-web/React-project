@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import classnames from "classnames"
 export default function ({ todos, setTodos, removeTodo, updateTodos }) {
     const initial = {
         title: "",
@@ -57,7 +58,11 @@ export default function ({ todos, setTodos, removeTodo, updateTodos }) {
                 todos.map((todo) => {
                     return (
                         <div key={todo.id} className="view">
-                            <li className={todo.isEdit ? "blank" : "completed"}>
+                            {/* <li className={todo.isEdit ? "blank" : "completed"}> */}
+                            <li className={classnames({
+                                blank: todo.isEdit,
+                                completed: !todo.isEdit
+                            })}>
                                 <span
                                     className={todo.isCheck ? "title" : ""}
                                     onDoubleClick={() => changeEditState(todo)}
